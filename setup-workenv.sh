@@ -20,6 +20,23 @@ do
 done
 echo '  ... done.'
 
+echo '* Installing system information tools ...'
+for tool in htop bmon iftop iotop dstat;
+do
+	echo "  - ${tool}"
+	sudo apt-get -y install ${tool} > /dev/null
+done
+echo '  ... done.'
+
+echo '* Installing basic system tools ...'
+for tool in ack;
+do
+	echo "  - ${tool}"
+	sudo apt-get -y install ${tool} > /dev/null
+done
+echo '  ... done.'
+
+
 echo '* Installing tools for terminal usage ...'
 for tool in mc pv unp rar p7zip-full pbzip2 screen tmux terminator;
 do
@@ -28,8 +45,9 @@ do
 done
 echo '  ... done.'
 
-echo '* Installing x-less emacs ...'
+echo '* Installing x-less emacs and adding Prelude pacakge...'
 sudo apt-get -y install emacs24-nox > /dev/null
+# curl -L https://github.com/bbatsov/prelude/raw/master/utils/installer.sh | sh
 echo '  ... done.'
 
 echo '* Installing developer tools ...'
@@ -77,11 +95,29 @@ fi
 popd > /dev/null
 
 echo '* Doing basic git configuration for user '${USER} ...
-read -p ' git full user name (for message): ' GITUSERNAME
-git config --global user.name "${GITUSERNAME}"
-read -p ' git user email (for message): ' GITUSEREMAIL
-git config --global user.email "${GITUSEREMAIL}"
-git config --global core.editor 'emacs24-nox'
-git config --global color.ui true
+# read -p ' git full user name (for message): ' GITUSERNAME
+# git config --global user.name "${GITUSERNAME}"
+# read -p ' git user email (for message): ' GITUSEREMAIL
+# git config --global user.email "${GITUSEREMAIL}"
+# git config --global core.editor 'emacs24-nox'
+# git config --global color.ui true
 echo '  ... done.'
 
+echo '* Doing some settings ...'
+echo '  - Disabling overlay scollbars'
+echo "export LIBOVERLAY_SCROLLBAR=0" >> ${HOME}/.xprofile
+echo '  - Setting up my bash extra settings'
+if [ ! -f ${HOME}/.bash_extras ]
+then
+cat > ${HOME}/.bash_extras <<EOF
+# We know that terminator supports this
+export TERM=xterm-256color
+EOF
+fi
+cat >> ${HOME}/.bashrc <<EOF
+## Check if our own bash settings can be included
+if [ -f ~/.bash_extras ]; then
+    . ~/.bash_extras
+fi
+EOF
+echo '  ... done.'
