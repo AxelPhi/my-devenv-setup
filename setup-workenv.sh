@@ -44,6 +44,9 @@ do
 	sudo apt-get -y install ${tool} > /dev/null
 done
 echo '  ... done.'
+echo '* Setting terminator as default terminal emulator ...'
+sudo update-alternatives --set x-terminal-emulator /usr/bin/terminator
+echo '  ... done.'
 
 echo '* Installing x-less emacs and adding Prelude pacakge...'
 sudo apt-get -y install emacs24-nox > /dev/null
