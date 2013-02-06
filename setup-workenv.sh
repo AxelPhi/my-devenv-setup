@@ -3,6 +3,10 @@ set -e
 set -u
 # set -x
 
+## Set some variables
+SKYPE_DOWNLOAD_URL="http://www.skype.com/go/getskype-linux-beta-ubuntu-64"
+
+## Start working
 echo '* Updating to latest versions ...'
 # sudo apt-get -y update  > /dev/null
 # sudo apt-get -y dist-upgrade > /dev/null
@@ -52,6 +56,22 @@ echo '* Installing x-less emacs and adding Prelude pacakge...'
 sudo apt-get -y install emacs24-nox > /dev/null
 # curl -L https://github.com/bbatsov/prelude/raw/master/utils/installer.sh | sh
 echo '  ... done.'
+
+echo '* Installing communication tools ...'
+for tool in thunderbird thunderbird-lightning thunderbird-enigmail pidgin pidgin-otr xchat xchat-otr;
+do
+	echo "  - ${tool}"
+	sudo apt-get -y install ${tool} > /dev/null
+done
+echo '  - Skype'
+pushd /tmp
+wget -O ./skype.deb ${SKYPE_DOWNLOAD_URL}  > /dev/null
+sudo dpkg -i ./skype.deb > /dev/null
+sudo apt-get -y -f install > /dev/null
+popd
+
+echo '  ... done.'
+
 
 echo '* Installing developer tools ...'
 for tool in kdiff3 wireshark htop dstat bmon iftop;
