@@ -8,8 +8,19 @@ SKYPE_DOWNLOAD_URL="http://www.skype.com/go/getskype-linux-beta-ubuntu-64"
 
 ## Start working
 echo '* Updating to latest versions ...'
-# sudo apt-get -y update  > /dev/null
-# sudo apt-get -y dist-upgrade > /dev/null
+sudo apt-get -y update  > /dev/null
+sudo apt-get -y dist-upgrade > /dev/null
+echo '  ... done.'
+
+echo '* Adding PPAs ...'
+for ppa in ppa:tiheum/equinox;
+do
+	echo "  - ${ppa}"
+	sudo apt-add-repository -y ${ppa} > /dev/null
+done
+echo '  ... done.'
+echo '* Updating repositories after adding PPAs ...'
+sudo apt-get -y update
 echo '  ... done.'
 
 echo '* Installing build-essential ...'
@@ -81,6 +92,15 @@ do
 done
 echo '  ... done.'
 
+echo '* Installing look and feel packages ...'
+for tool in faience-theme faience-icon-theme;
+do
+	echo "  - ${tool}"
+	sudo apt-get -y install ${tool} > /dev/null
+done
+echo '  ... done.'
+
+sudo aptitude install faience-theme
 
 echo '* Preparing basic SSH dir for user '${USER} ...
 pushd $HOME > /dev/null
