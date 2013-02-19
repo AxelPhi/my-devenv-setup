@@ -117,7 +117,7 @@ pushd $HOME > /dev/null
 if [ ! -d .ssh ]
 then
     mkdir .ssh > /dev/null
-    chmod 700 .ssh /dev/null
+    chmod 700 .ssh > /dev/null
 fi
 if [ ! -f .ssh/config ]
 then
