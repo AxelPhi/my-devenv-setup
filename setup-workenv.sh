@@ -12,17 +12,6 @@ sudo apt-get -y update  > /dev/null
 sudo apt-get -y dist-upgrade > /dev/null
 echo '  ... done.'
 
-echo '* Adding PPAs ...'
-for ppa in ppa:tiheum/equinox;
-do
-	echo "  - ${ppa}"
-	sudo apt-add-repository -y ${ppa} > /dev/null
-done
-echo '  ... done.'
-echo '* Updating repositories after adding PPAs ...'
-sudo apt-get -y update
-echo '  ... done.'
-
 echo '* Installing build-essential ...'
 sudo apt-get install -y build-essential > /dev/null
 echo '  ... done.'
@@ -34,6 +23,21 @@ do
 	sudo apt-get -y install ${tool} > /dev/null
 done
 echo '  ... done.'
+
+echo '* Adding PPAs ...'
+for ppa in ppa:tiheum/equinox;
+do
+	echo "  - ${ppa}"
+	sudo apt-add-repository -y ${ppa} > /dev/null
+done
+echo "  - Google Chrome"
+wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+echo '  ... done.'
+echo '* Updating repositories after adding PPAs ...'
+sudo apt-get -y update
+echo '  ... done.'
+
 
 echo '* Installing system information tools ...'
 for tool in htop bmon iftop iotop dstat;
@@ -138,12 +142,36 @@ fi
 popd > /dev/null
 
 echo '* Doing basic git configuration for user '${USER} ...
-# read -p ' git full user name (for message): ' GITUSERNAME
-# git config --global user.name "${GITUSERNAME}"
-# read -p ' git user email (for message): ' GITUSEREMAIL
-# git config --global user.email "${GITUSEREMAIL}"
-# git config --global core.editor 'emacs24-nox'
-# git config --global color.ui true
+read -p ' git full user name (for message): ' GITUSERNAME
+git config --global user.name "${GITUSERNAME}"
+read -p ' git user email (for message): ' GITUSEREMAIL
+git config --global user.email "${GITUSEREMAIL}"
+git config --global core.editor 'emacs24-nox'
+git config --global color.ui true
+KDIFF3PATH=$(which kdiff3)
+cat >> ${HOME}/.gitconfig <<EOF
+
+[difftool "kdiff3"]
+    path = ${KDIFF3PATH}
+    trustExitCode = false
+
+[difftool]
+    prompt = false
+
+[diff]
+    tool = kdiff3
+
+[mergetool "kdiff3"]
+    path = ${KDIFF3PATH}
+    trustExitCode = false
+
+[mergetool]
+    keepBackup = false
+
+[merge]
+    tool = kdiff3
+
+EOF
 echo '  ... done.'
 
 echo '* Doing some settings ...'
