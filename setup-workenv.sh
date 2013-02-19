@@ -110,8 +110,6 @@ do
 done
 echo '  ... done.'
 
-sudo aptitude install faience-theme
-
 echo '* Preparing basic SSH dir for user '${USER} ...
 pushd $HOME > /dev/null
 if [ ! -d .ssh ]
