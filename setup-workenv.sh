@@ -32,10 +32,10 @@ do
 done
 echo "  - Google Chrome"
 wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' > /dev/null
 echo '  ... done.'
 echo '* Updating repositories after adding PPAs ...'
-sudo apt-get -y update
+sudo apt-get -y update > /dev/null
 echo '  ... done.'
 
 
@@ -81,7 +81,13 @@ done
 echo '  - Skype'
 pushd /tmp
 wget -O ./skype.deb ${SKYPE_DOWNLOAD_URL}  > /dev/null
+## Skype will fail due to missing dependencies. The next
+## apt-get command will fix that, but we need to disable "-e" 
+## for it temporarily.
+set +e
 sudo dpkg -i ./skype.deb > /dev/null
+set -e
+
 sudo apt-get -y -f install > /dev/null
 popd
 
