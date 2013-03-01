@@ -104,7 +104,7 @@ echo '  ... done.'
 if [[ ${INSTALL_GNOME_SHELL} = "1" ]]; then
 
     echo '* Installing gnome shell desktop environment ...'
-    sudo DEBIAN_FRONTNED=noninteractive apt-get -y install ubuntu-gnome-desktop ubuntu-gnome-default-settings gnome-documents > /dev/null
+    sudo DEBIAN_FRONTEND=noninteractive apt-get -y install ubuntu-gnome-desktop ubuntu-gnome-default-settings gnome-documents > /dev/null
     sudo apt-get -y remove ubuntu-settings > /dev/null
     sudo update-rc.d lightdm remove
     sudo update-rc.d gdm defaults
