@@ -20,7 +20,7 @@ sudo apt-get -y dist-upgrade > /dev/null
 echo '  ... done.'
 
 echo '* Installing build-essential ...'
-sudo apt-get install -y build-essential > /dev/null
+sudo apt-get install -y ack build-essential > /dev/null
 echo '  ... done.'
 
 echo '* Installing tools to fetch software and stuff ...'
@@ -43,7 +43,6 @@ echo '* Updating repositories after adding PPAs ...'
 sudo apt-get -y update > /dev/null
 echo '  ... done.'
 
-
 echo '* Installing system information tools ...'
 for tool in htop bmon iftop iotop dstat; do
 	echo "  - ${tool}"
@@ -51,27 +50,26 @@ for tool in htop bmon iftop iotop dstat; do
 done
 echo '  ... done.'
 
-echo '* Installing basic system tools ...'
-for tool in ack; do
-	echo "  - ${tool}"
-	sudo apt-get -y install ${tool} > /dev/null
-done
-echo '  ... done.'
-
-
 echo '* Installing tools for terminal usage ...'
 for tool in mc pv unp rar p7zip-full pbzip2 screen tmux terminator; do
 	echo "  - ${tool}"
 	sudo apt-get -y install ${tool} > /dev/null
 done
 echo '  ... done.'
+
+echo '* Installing security tools ...'
+for tool in gnupg keepass2 encfs cryptkeeper pwgen; do
+	echo "  - ${tool}"
+	sudo apt-get -y install ${tool} > /dev/null
+done
+echo '  ... done.'
+
 echo '* Setting terminator as default terminal emulator ...'
 sudo update-alternatives --set x-terminal-emulator /usr/bin/terminator
 echo '  ... done.'
 
-echo '* Installing x-less emacs and adding Prelude pacakge...'
-sudo apt-get -y install emacs24-nox > /dev/null
-# curl -L https://github.com/bbatsov/prelude/raw/master/utils/installer.sh | sh
+echo '* Installing emacs...'
+sudo apt-get -y install emacs24 > /dev/null
 echo '  ... done.'
 
 echo '* Installing communication tools ...'
@@ -106,14 +104,12 @@ if [[ ${INSTALL_GNOME_SHELL} = "1" ]]; then
     echo '* Installing gnome shell desktop environment ...'
     sudo DEBIAN_FRONTEND=noninteractive apt-get -y install ubuntu-gnome-desktop ubuntu-gnome-default-settings gnome-documents > /dev/null
     sudo apt-get -y remove ubuntu-settings > /dev/null
-    sudo update-rc.d lightdm remove
-    sudo update-rc.d gdm defaults
     echo '  ... done.'
 
 fi
 
-echo '* Installing look and feel packages ...'
-for tool in faience-theme faience-icon-theme mediterraneannight-gtk-theme; do
+echo '* Installing look and feel packages and fonts...'
+for tool in faience-theme faience-icon-theme mediterraneannight-gtk-theme fonts-inconsolata; do
 	echo "  - ${tool}"
 	sudo apt-get -y install ${tool} > /dev/null
 done
@@ -206,3 +202,9 @@ if [ -f ~/.bash_extras ]; then
 fi
 EOF
 echo '  ... done.'
+
+## Postprocessing notes
+echo 'Consider the following manual post-installation steps:'
+echo
+echo '## Make GDM the default login manager'
+echo '# sudo dpkg-reconfigure gdm'
