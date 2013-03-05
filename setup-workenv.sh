@@ -93,7 +93,7 @@ popd
 echo '  ... done.'
 
 echo '* Installing developer tools ...'
-for tool in kdiff3 wireshark htop dstat bmon iftop; do
+for tool in kdiff3 wireshark htop dstat bmon iftop python2.7 python2.7-dev libxml2-dev libxslt1-dev virtualenvwrapper ; do
 	echo "  - ${tool}"
 	sudo apt-get -y install ${tool} > /dev/null
 done
