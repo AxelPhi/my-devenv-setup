@@ -24,7 +24,7 @@ sudo apt-get install -y ack build-essential > /dev/null
 echo '  ... done.'
 
 echo '* Installing tools to fetch software and stuff ...'
-for tool in aptitude git-core subversion subversion-tools wget curl mercurial rsync lftp s3cmd; do
+for tool in aptitude git-core subversion subversion-tools wget curl mercurial rsync lftp s3cmd filezilla; do
 	echo "  - ${tool}"
 	sudo apt-get -y install ${tool} > /dev/null
 done
