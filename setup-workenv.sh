@@ -88,6 +88,8 @@ sudo dpkg -i ./skype.deb &> /dev/null
 set -e
 
 sudo apt-get -y -f install > /dev/null
+# This one seems to be still missing after the "-f install" command.
+sudo apt-get -y install libasound2-plugins:i386 > /dev/null
 popd
 
 echo '  ... done.'
